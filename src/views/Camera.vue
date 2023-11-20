@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
+// import MediaStreamRecorder from 'msr'
 const [messageApi, contextHolder] = message.useMessage()
 
 const video: Ref<HTMLVideoElement | null> = ref(null)
@@ -10,7 +11,7 @@ let stream: MediaStream | null = null
 const onOpenCamere = () => {
   navigator.mediaDevices
     .getUserMedia({
-      audio: true,
+      audio: false,
       video: true
     })
     .then((loaclStream) => {
@@ -117,7 +118,7 @@ function startRecord() {
       timer.value++
     }, 1000)
   }
-  mediaRecorder.onstop = (e: Event) => {
+  mediaRecorder.onstop = () => {
     // 停止录制
     timer.value = 0
     clearInterval(timerId)
@@ -142,6 +143,50 @@ function downloadBlob(blob: Blob) {
   a.click()
   // 释放 URL 地址
   URL.revokeObjectURL(url)
+}
+
+const gitTimer = ref(0)
+let gifStreamRecorder
+
+function gifStartRecord() {
+  if (!stream) {
+    messageApi.warning('请先获取本地音视频流')
+    return
+  }
+  if (gifStreamRecorder?.state === 'recording') {
+    gifStreamRecorder.stop()
+    return
+  }
+  try {
+    const chunks: Blob[] = []
+    let timerId: any
+    // @ts-ignore
+    gifStreamRecorder = new MediaStreamRecorder(stream)
+    gifStreamRecorder.mimeType = 'image/gif'
+    gifStreamRecorder.stream = stream
+    gifStreamRecorder.start()
+
+    gifStreamRecorder.ondataavailable = (e) => {
+      chunks.push(e.data)
+    }
+    gifStreamRecorder.onstart = () => {
+      timerId = setInterval(() => {
+        gitTimer.value++
+      }, 1000)
+    }
+    gifStreamRecorder.onstop = () => {
+      // 停止录制
+      gitTimer.value = 0
+      clearInterval(timerId)
+      // 将录制的数据合并成一个 Blob 对象
+      // const blob = new Blob(chunks, { type: chunks[0].type })
+      const blob = new Blob(chunks, { type: gifStreamRecorder?.mimeType })
+      downloadBlob(blob)
+      chunks.length = 0
+    }
+  } catch (e) {
+    console.error(e, 'errr')
+  }
 }
 </script>
 
@@ -176,10 +221,15 @@ function downloadBlob(blob: Blob) {
           item.label
         }}</a-select-option>
       </a-select>
-      <a-button @click="startRecord">
+      <a-button @click="startRecord" type="primary" :danger="!!timer">
         {{ timer === 0 ? ' 开始录制' : '终止录制 | ' + timer }}</a-button
       >
     </div>
+    <!-- <div class="mb20">
+      <a-button @click="gifStartRecord" type="primary" :danger="!!gitTimer">
+        {{ gitTimer === 0 ? ' 开始录制Gif' : '终止录制Gif | ' + timer }}</a-button
+      >
+    </div> -->
   </div>
 </template>
 
@@ -195,6 +245,6 @@ video {
   /* text-align: center; */
 }
 .mb20 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 </style>

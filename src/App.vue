@@ -15,7 +15,10 @@
            <router-link to="/desktop">桌面分享</router-link>
         </a-menu-item>
         <a-menu-item key="3">
-           <router-link to="/connect">模拟上课</router-link>
+           <router-link to="/teacher">老师端 / 分享桌面</router-link>
+        </a-menu-item>
+        <a-menu-item key="4">
+           <router-link to="/student">学生端 / 分享摄像头</router-link>
         </a-menu-item>
       </a-menu>
     </a-layout-header>
