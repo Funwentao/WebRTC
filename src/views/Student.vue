@@ -55,8 +55,7 @@ function copyToClipboard(val: string) {
     </div>
     <div>
       <div class="mb20">
-        输入老师端创建的offer:
-        <br />
+        <div class="mb20">输入老师端创建的offer:</div>
         <a-input-group compact>
           <a-input v-model:value="offerSdp2" style="width: calc(100% - 200px)" />
           <a-button type="primary" @click="createAnswer">创建answer</a-button>
