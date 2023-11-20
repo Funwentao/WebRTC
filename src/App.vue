@@ -8,17 +8,29 @@
         mode="horizontal"
         :style="{ lineHeight: '64px' }"
       >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
+        <a-menu-item key="2">
+            <router-link to="/">摄像头</router-link>
+        </a-menu-item>
+        <a-menu-item key="1">
+           <router-link to="/desktop">桌面分享</router-link>
+        </a-menu-item>
+        <a-menu-item key="3">
+           <router-link to="/connect">模拟上课</router-link>
+        </a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout-content style="padding: 0 50px">
-      <a-breadcrumb style="margin: 16px 0">
-        <a-breadcrumb-item>Home</a-breadcrumb-item>
-        <a-breadcrumb-item>List</a-breadcrumb-item>
-        <a-breadcrumb-item>App</a-breadcrumb-item>
-      </a-breadcrumb>
+      <!-- <a-breadcrumb style="margin: 16px 0">
+        <a-breadcrumb-item>
+          <router-link to="/desktop">桌面分享</router-link>
+        </a-breadcrumb-item>
+        <a-breadcrumb-item>
+          <router-link to="/">桌面分享</router-link>
+        </a-breadcrumb-item>
+        <a-breadcrumb-item>
+          <router-link to="/connect">模拟上课</router-link>
+        </a-breadcrumb-item>
+      </a-breadcrumb> -->
       <main class="main">
         <router-view></router-view>
       </main>

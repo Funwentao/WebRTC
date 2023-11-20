@@ -2,14 +2,13 @@
 import 'webrtc-adapter'
 import {ref} from 'vue';
 import type {Ref} from 'vue';
-import {Input as aInput, InputGroup as aInputGroup, Button as aButton} from 'ant-design-vue'
 
 const local:Ref<HTMLVideoElement | null> = ref(null);
 const remote:Ref<HTMLVideoElement | null> = ref(null);
 const pc = new RTCPeerConnection({
   iceServers: [{ urls: 'stun:stun.voipbuster.com ' }],
 });
-navigator.mediaDevices.getDisplayMedia({
+navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true,
 }).then(loaclStream => {
